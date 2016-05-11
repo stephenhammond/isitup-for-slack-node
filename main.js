@@ -7,11 +7,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/isitup',(req, res) =>{
+
+  if (req.token != '46DjNf4FV4JtMOFKGhouWpz2'){
+  	res.end("The token for the slash command doesn't match. Check your script.");
+  }
   
   var inputText = req.text;
-  //for testing
-  inputText = 'tsn.ca';
-
   var options = {
   	hostname: 'isitup.org',
   	path: '/'+inputText+'.json',
@@ -21,7 +22,7 @@ app.get('/isitup',(req, res) =>{
  	}
   };
 
-  https.get(options, (response) => {
+  https.request(options, (response) => {
   	//response.setEncoding('utf8');
 	response.on('data', (result) =>{
 		result = JSON.parse(result);
@@ -33,7 +34,6 @@ app.get('/isitup',(req, res) =>{
 		  	res.send(":disappointed: I am sorry to report that *<http://"+result.domain+"|"+result.domain+">* is *not up*!");
 		}else if(result.status_code == 3){
 			res.send(":interrobang: *"+inputText+"* does not appear to be a valid domain. \n"+"Please enter both the domain name AND suffix (example: *amazon.com* or *whitehouse.gov*).");
-
 		}
 	});
 	response.on('error', (message) => {
