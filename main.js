@@ -36,14 +36,14 @@ app.get('/isitup',(req, res) =>{
 
 		}
 	});
-	response.on('error', (chunk) => {
-    	res.send("Ironically, isitup could not be reached.");
+	response.on('error', (message) => {
+    	res.send(":sob: Ironically, isitup could not be reached.");
   	});
   });
 
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Example app listening on port 3000!');
 });
 
