@@ -1,47 +1,49 @@
 var express = require('express');
 var app = express();
-const https = require('https');
+var request = require('request');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.send('Welcome to our isitup integration!!');
 });
 
 app.get('/isitup',(req, res) =>{
-	console.log("REQUEST!");
-	console.log(req);
-
-  if (req.token != '46DjNf4FV4JtMOFKGhouWpz2'){
-  	res.end("The token for the slash command doesn't match. Check your script.");
-  }
+	// console.log("REQUEST!");	
+	console.log(req.body);
   
-  var inputText = req.text;
-  var options = {
-  	hostname: 'isitup.org',
-  	path: '/'+inputText+'.json',
- 	method: 'GET',
- 	headers: {
- 		'User-Agent': 'IsitupForSlack/1.0 (https://github.com/sphammond/istiupforslack; sphammond@gmail.com)'
- 	}
-  };
+  if (req.token != '46DjNf4FV4JtMOFKGhouWpz2'){
+  	return res.end("The token for the slash command doesn't match. Check your script.");
+  }else{
+	  //var inputText = req.text;
+	  inputText = 'tsn.ca';
+	  var options = {
+	  	uri: 'https://isitup.org/'+inputText+'.json',
+	 	method: 'GET',
+	 	headers: {
+	 		'User-Agent': 'IsitupForSlack/1.0 (https://github.com/sphammond/istiupforslack; sphammond@gmail.com)'
+	 	}
+	  };
 
-  https.request(options, (response) => {
-  	//response.setEncoding('utf8');
-	response.on('data', (result) =>{
-		result = JSON.parse(result);
-		if (result.status_code == 1){
-			responseText = ":thumbsup: I am happy to report that *<http://"+inputText+"|"+inputText+">* is *up*!";
-			console.log(responseText);
-		  	res.send(responseText);
-		}else if(result.status_code == 2){
-		  	res.send(":disappointed: I am sorry to report that *<http://"+result.domain+"|"+result.domain+">* is *not up*!");
-		}else if(result.status_code == 3){
-			res.send(":interrobang: *"+inputText+"* does not appear to be a valid domain. \n"+"Please enter both the domain name AND suffix (example: *amazon.com* or *whitehouse.gov*).");
+	  request(options, (error, response, body) => {
+	  	if(error){
+	  		console.log(error);
+	  		return res.send(404);
+	  	}else{
+			result = JSON.parse(body);
+			if (result.status_code == 1){
+				responseText = ":thumbsup: I am happy to report that *<http://"+inputText+"|"+inputText+">* is *up*!";
+				console.log(responseText);
+			  	res.send(responseText);
+			}else if(result.status_code == 2){
+			  	res.send(":disappointed: I am sorry to report that *<http://"+result.domain+"|"+result.domain+">* is *not up*!");
+			}else if(result.status_code == 3){
+				res.send(":interrobang: *"+inputText+"* does not appear to be a valid domain. \n"+"Please enter both the domain name AND suffix (example: *amazon.com* or *whitehouse.gov*).");
+			}
 		}
-	});
-	response.on('error', (message) => {
-    	res.send(":sob: Ironically, isitup could not be reached.");
-  	});
-  });
+	  });
+	}
 
 });
 

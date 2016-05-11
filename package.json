@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/stephenhammond/isitup-for-slack-node#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4",
+    "request": "^2.72.0"
   }
 }
