@@ -11,15 +11,12 @@ app.get('/', (req, res) => {
 
 app.get('/isitup',(req, res) =>{
 	console.log("REQUEST!");	
-	console.log(JSON.stringify(req.text));
-
+	console.log(req);
   
   if (req.body.token != '46DjNf4FV4JtMOFKGhouWpz2'){
   	return res.end("The token for the slash command doesn't match. Check your script.");
   }else{
 	  var inputText = req.body.text;
-	  //inputText = 'tsn.ca';
-
 	  var options = {
 	  	uri: 'https://isitup.org/'+inputText+'.json',
 	 	method: 'GET',
