@@ -1,13 +1,9 @@
 var express = require('express');
 var app = express();
 var request = require('request');
-var bodyParser = require('body-parser');
+// var bodyParser = require('body-parser');
 
-app.use(bodyParser.json());
-
-app.get('/', (req, res) => {
-  res.send('Welcome to our isitup integration!!');
-});
+// app.use(bodyParser.json());
 
 app.get('/isitup',(req, res) =>{
 	console.log("REQUEST!");	
