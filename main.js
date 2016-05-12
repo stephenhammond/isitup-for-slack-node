@@ -1,13 +1,8 @@
 var express = require('express');
 var app = express();
 var request = require('request');
-// var bodyParser = require('body-parser');
-
-// app.use(bodyParser.json());
 
 app.get('/isitup',(req, res) =>{
-	console.log("REQUEST!");	
-	console.log(req.query);
 	var body = req.query;
   
     if (body.token != '46DjNf4FV4JtMOFKGhouWpz2'){
