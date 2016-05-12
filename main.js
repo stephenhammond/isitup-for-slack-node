@@ -10,8 +10,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/isitup',(req, res) =>{
-	// console.log("REQUEST!");	
-	
+	console.log("REQUEST!");	
+	console.log(req.body);
   
   if (req.body.token != '46DjNf4FV4JtMOFKGhouWpz2'){
   	return res.end("The token for the slash command doesn't match. Check your script.");
