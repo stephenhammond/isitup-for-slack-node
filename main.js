@@ -12,11 +12,12 @@ app.get('/', (req, res) => {
 app.get('/isitup',(req, res) =>{
 	console.log("REQUEST!");	
 	console.log(req.query);
+	var body = req.query;
   
-  if (req.body.token != '46DjNf4FV4JtMOFKGhouWpz2'){
-  	return res.end("The token for the slash command doesn't match. Check your script.");
-  }else{
-	  var inputText = req.body.text;
+    if (req.body.token != '46DjNf4FV4JtMOFKGhouWpz2'){
+  	  return res.end("The token for the slash command doesn't match. Check your script.");
+    }else{
+	  var inputText = body.text;
 	  var options = {
 	  	uri: 'https://isitup.org/'+inputText+'.json',
 	 	method: 'GET',
@@ -47,6 +48,6 @@ app.get('/isitup',(req, res) =>{
 });
 
 app.listen(process.env.PORT || 3000, () => {
-  console.log('Example app listening on port 3000!');
+    console.log('Example app listening on port 3000!');
 });
 
